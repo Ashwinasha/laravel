@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -10,7 +12,7 @@
             padding: 0;
         }
         .container {
-            max-width: 400px;
+            max-width: 800px;
             margin: 50px auto;
             background: #ffffff;
             padding: 30px;
@@ -68,34 +70,39 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <div>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}">
-                @error('email')
-                    <div class="error">{{ $message }}</div>
-                @enderror
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Login</div>
+                    <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                        <p>If you didn't receive a verification email, you can <a href="{{ route('verification.resend') }}">request a new one</a>.</p>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password">
-                @error('password')
-                    <div class="error">{{ $message }}</div>
-                @enderror
-            </div>
-            <div>
-                <button type="submit">Login</button>
-            </div>
-        </form>
-        @if (session('status'))
-            <div class="status">{{ session('status') }}</div>
-        @endif
-        @if (session('error'))
-            <div class="error">{{ session('error') }}</div>
-        @endif
+        </div>
     </div>
 </body>
 </html>
